@@ -4,7 +4,6 @@ import torch
 import cv2
 from PIL import Image
 from parseq.strhub.data.module import SceneTextDataModule
-from airtest.aircv import imread, show_origin_size
 from flask import Flask, request
 
 
@@ -46,4 +45,4 @@ def service():
 
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=5000)
+    app.run("0.0.0.0", port=8000)
