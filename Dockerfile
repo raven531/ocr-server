@@ -44,6 +44,10 @@ RUN apt-get update && apt-get install -y \
     # best practice to keep the Docker image lean
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN wget https://github.com/baudm/parseq/releases/download/v1.0.0/parseq-bb5792a6.pt --no-check-certificate
+
+RUN mkdir -p /root/.cache/torch/hub/checkpoints && cp parseq-bb5792a6.pt /root/.cache/torch/hub/checkpoints/parseq-bb5792a6.pt
+
 WORKDIR app/
 
 
