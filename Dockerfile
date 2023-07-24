@@ -5,6 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV MPLLOCALFREETYPE 1
 
 
+# https://github.com/NVIDIA/nvidia-docker/issues/1009#issuecomment-1181312052
+RUN  rm /etc/apt/sources.list.d/cuda.list
 RUN apt-get update && apt-get install -y \
     build-essential \
     git \
@@ -31,7 +33,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     ca-certificates &&\
     # obtain latest of nodejs
-    curl -sL https://deb.nodesource.com/setup_12.x | bash - &&\
+    curl --insecure -sL https://deb.nodesource.com/setup_12.x | bash - &&\
     apt install -y nodejs &&\
     apt-get clean &&\
     ln -s /usr/bin/python3.8 /usr/local/bin/python &&\
@@ -47,7 +49,7 @@ WORKDIR app/
 
 COPY requirements.txt .
 
-RUN  pip install --upgrade pip && pip install -r requirements.txt
+RUN  pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 

@@ -5,7 +5,10 @@ import cv2
 from PIL import Image
 from parseq.strhub.data.module import SceneTextDataModule
 from flask import Flask, request
-
+import ssl
+#https://clay-atlas.com/us/blog/2021/09/26/python-en-urllib-error-ssl-certificate/
+# this issue resolve is for IGS internal net cannot build docker image, suck!!
+ssl._create_default_https_context = ssl._create_unverified_context
 
 class OCRReader:
     def __init__(self):
