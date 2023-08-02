@@ -7,7 +7,7 @@ ENV MPLLOCALFREETYPE 1
 
 # https://github.com/NVIDIA/nvidia-docker/issues/1009#issuecomment-1181312052
 RUN  rm /etc/apt/sources.list.d/cuda.list
-RUN apt-get update && apt-get install -y \
+RUN apt-get update --fix-missing && apt-get install -y \
     build-essential \
     git \
     wget \
@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y \
     apt-get clean &&\
     ln -s /usr/bin/python3.8 /usr/local/bin/python &&\
     ln -s /usr/bin/python3.8 /usr/local/bin/python3 &&\
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py &&\
+    curl --insecure https://bootstrap.pypa.io/get-pip.py -o get-pip.py &&\
     python3 get-pip.py &&\
     rm get-pip.py &&\
     # best practice to keep the Docker image lean
