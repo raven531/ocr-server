@@ -1,4 +1,3 @@
-import codecs
 import numpy as np
 import torch
 import cv2
@@ -7,9 +6,11 @@ from parseq.strhub.data.module import SceneTextDataModule
 from flask import Flask, request
 import easyocr
 import ssl
-#https://clay-atlas.com/us/blog/2021/09/26/python-en-urllib-error-ssl-certificate/
+
+# https://clay-atlas.com/us/blog/2021/09/26/python-en-urllib-error-ssl-certificate/
 # this issue resolve is for IGS internal net cannot build docker image, suck!!
 ssl._create_default_https_context = ssl._create_unverified_context
+
 
 class OCRReader:
     def __init__(self):
@@ -28,7 +29,7 @@ class OCRReader:
 
 
 reader = OCRReader()
-easyocr_reader = easyocr.Reader(['ch_sim'])
+easyocr_reader = easyocr.Reader(['ch_sim'], download_enabled=False)
 
 app = Flask(__name__)
 
@@ -49,13 +50,19 @@ def service():
     except IndexError:
         return None
 
-@app.route("/easyocr", methods=['GET', 'POST'])
-def easy_ocr():
-    data = request.data
+
+def real_easyocr(data):
     np_arr = np.fromstring(data, np.uint8)
     img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     ret = easyocr_reader.readtext(img, detail=False)
-    return ret[-1] if len(ret) > 0 else None
+    return ret[-1] if len(ret) > 0 else ""
+
+
+@app.route("/easyocr", methods=['GET', 'POST'])
+def easy_ocr():
+    data = request.data
+    ret = real_easyocr(data)
+    return ret
 
 
 if __name__ == "__main__":
