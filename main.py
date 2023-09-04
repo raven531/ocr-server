@@ -5,6 +5,7 @@ import cv2
 from PIL import Image
 from parseq.strhub.data.module import SceneTextDataModule
 from flask import Flask, request
+import easyocr
 import ssl
 #https://clay-atlas.com/us/blog/2021/09/26/python-en-urllib-error-ssl-certificate/
 # this issue resolve is for IGS internal net cannot build docker image, suck!!
@@ -27,6 +28,8 @@ class OCRReader:
 
 
 reader = OCRReader()
+easyocr_reader = easyocr.Reader(['ch_sim'])
+
 app = Flask(__name__)
 
 
@@ -45,6 +48,14 @@ def service():
         return ret[0]
     except IndexError:
         return None
+
+@app.route("/easyocr", methods=['GET', 'POST'])
+def easy_ocr():
+    data = request.data
+    np_arr = np.fromstring(data, np.uint8)
+    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    ret = easyocr_reader.readtext(img, detail=False)
+    return ret[-1] if len(ret) > 0 else None
 
 
 if __name__ == "__main__":
