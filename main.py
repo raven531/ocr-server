@@ -29,7 +29,7 @@ class OCRReader:
 
 
 reader = OCRReader()
-easyocr_reader = easyocr.Reader(['ch_sim'], download_enabled=False)
+easyocr_reader = easyocr.Reader(['ch_sim'], download_enabled=True)
 
 app = Flask(__name__)
 

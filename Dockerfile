@@ -45,14 +45,15 @@ RUN apt-get update --fix-missing && apt-get install -y \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN wget https://github.com/baudm/parseq/releases/download/v1.0.0/parseq-bb5792a6.pt --no-check-certificate
-RUN wget https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip --no-check-certificate
-RUN wget https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/chinese_sim.zip --no-check-certificate
+#RUN wget https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip --no-check-certificate
+#RUN wget https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/chinese_sim.zip --no-check-certificate
 
 RUN mkdir -p /root/.cache/torch/hub/checkpoints && cp parseq-bb5792a6.pt /root/.cache/torch/hub/checkpoints/parseq-bb5792a6.pt
 # https://github.com/JaidedAI/EasyOCR/issues/762#issuecomment-1502819379
-RUN mkdir -p /root/.EasyOCR/model &&  \
-    tar -xzvf craft_mlt_25k.zip && tar -xzvf chinese_sim.zip \
-    cp zh_sim_g2.pth /root/.EasyOCR/model/zh_sim_g2.pth && cp craft_mlt_25k.zip
+#RUN mkdir -p /root/.EasyOCR/model &&  \
+#    unzip craft_mlt_25k.zip && unzip chinese_sim.zip && \
+#    cp chinese_sim.pth /root/.EasyOCR/model/chinese_sim.pth &&  \
+#    cp craft_mlt_25k.zip /root/.EasyOCR/model/craft_mlt_25k.pth
 
 
 WORKDIR app/
